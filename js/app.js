@@ -71,8 +71,8 @@ let   settings = CONFIG.beta ? Object.assign({}, FILE_SETTINGS, readLS(LS.ui, {}
 const isBase = cat => cat === 'base';
 const meta   = (cat, n) => isBase(cat) ? { n: 0, w: BASE.w, h: BASE.h } : ITEMS[cat].find(i => i.n === n);
 const key    = (cat, n) => `${cat}/${n}`;
-const bigSrc = (cat, n) => isBase(cat) ? BASE.src : `items/${CAT_BY_ID[cat].dir}/${n}.png`;
-const thumbSrc = (cat, n) => isBase(cat) ? 'assets/thumbs/base/0.png' : `assets/thumbs/${cat}/${n}.png`;
+const bigSrc = (cat, n) => isBase(cat) ? BASE.src : `items/${CAT_BY_ID[cat].dir}/${n}.webp`;
+const thumbSrc = (cat, n) => isBase(cat) ? 'assets/thumbs/base/0.webp' : `assets/thumbs/${cat}/${n}.webp`;
 
 /** позиция объекта; если её нет в layout — считаем по якорю категории */
 function pos(cat, n){

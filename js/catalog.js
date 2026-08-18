@@ -34,7 +34,7 @@ window.CONFIG = {
 window.BASE = {
   w: 1158,
   h: 3106,
-  src: 'items/base.png',
+  src: 'items/base.webp',
   id: 'base',
   name: 'Тело'
 };
