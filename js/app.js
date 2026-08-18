@@ -209,6 +209,7 @@ function makeLayer(cat, n, fresh){
   const img = new Image();
   img.className = 'layer' + (fresh ? ' is-new' : '');
   img.draggable = false;
+  img.decoding = 'async';
   img.alt = `${CAT_BY_ID[cat].name} №${n}`;
   img.dataset.cat = cat; img.dataset.n = n;
   setLoading(true);
@@ -369,7 +370,7 @@ function paintShelf(soft){
       b.style.setProperty('--d', (i * 32) + 'ms');
       applyIconVars(b, cat, it.n);
       b.innerHTML =
-        `<img loading="lazy" src="${url(thumbSrc(cat, it.n))}" alt="${CAT_BY_ID[cat].name} ${it.n}"` +
+        `<img loading="lazy" decoding="async" fetchpriority="low" src="${url(thumbSrc(cat, it.n))}" alt="${CAT_BY_ID[cat].name} ${it.n}"` +
         ` onerror="this.src='${url(bigSrc(cat, it.n))}'">` +
         `<span class="card__num">${it.n}</span><i class="card__shine"></i>`;
       b.onclick = e => {
@@ -1011,6 +1012,8 @@ $('#btnSound').onclick  = () => {
   if (soundOn) sndTap();
 };
 
+baseImg.fetchPriority = 'high';        // тело грузим первым
+baseImg.decoding = 'async';
 baseImg.src = url(BASE.src);
 baseImg.dataset.cat = 'base';
 baseImg.dataset.n = 0;

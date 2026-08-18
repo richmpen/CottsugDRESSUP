@@ -316,6 +316,7 @@ button{ font:inherit; color:inherit; }
 .worn__chip i{ font-style:normal; color:var(--p400); }
 
 /* ---------- 7. Гардероб ---------- */
+.wardrobe__head{ display:flex; }
 .wardrobe{
   flex:0 0 clamp(300px, 27vw, 430px);
   min-height:0;
@@ -385,7 +386,7 @@ button{ font:inherit; color:inherit; }
   -webkit-overflow-scrolling:touch;
   padding:4px var(--pad) var(--pad);
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(var(--card,92px),1fr));
+  grid-template-columns:repeat(auto-fill, minmax(min(var(--card,92px), var(--card-max,999px)),1fr));
   gap:10px;
   align-content:start;
 }
@@ -412,7 +413,9 @@ button{ font:inherit; color:inherit; }
 @keyframes cardIn{ from{ opacity:0; transform:translateY(14px) scale(.9); } to{ opacity:1; transform:none; } }
 
 .card img{
-  max-width:100%; max-height:100%; object-fit:contain;
+  position:absolute; left:9px; top:9px;
+  width:calc(100% - 18px); height:calc(100% - 18px);
+  object-fit:contain;
   filter:drop-shadow(0 3px 5px rgba(216,67,127,.18));
   transform:translate(var(--tx,0%), var(--ty,0%)) rotate(var(--tr,0deg)) scale(var(--ts,1));
   transition:transform .28s var(--ease-pop);
@@ -603,7 +606,7 @@ kbd{
   .tool b{ display:none; }
   .tool{ padding:9px 12px 11px; }
   .tool--beta b{ display:inline; }
-  .shelf{ --card:80px; }
+  .shelf{ --card-max:96px; }
 }
 
 @media (max-width:900px) and (min-width:761px){
@@ -656,7 +659,8 @@ kbd{
   .wardrobe::before{ margin-top:18px; }
   .wardrobe__head{ display:none; }
   .tabs{ padding:8px 12px; }
-  .shelf{ --card:84px; gap:9px; }
+  .shelf{ --card-max:86px; gap:8px; }
+  .wardrobe::before{ display:none; }   /* полукружочки только на десктопе */
 
   .fab{
     display:flex; align-items:center; gap:8px;
@@ -695,7 +699,7 @@ kbd{
   .tools{ gap:4px; flex-wrap:nowrap; }
   .tool{ padding:7px 8px 9px; box-shadow:0 3px 0 var(--edge); }
   .tool span{ font-size:14px; }
-  .shelf{ --card:74px; }
+  .shelf{ --card-max:76px; gap:7px; }
 }
 
 /* — альбомная мобилка: низкая высота — */
@@ -897,7 +901,7 @@ kbd{
 .wardrobe__tg svg{ width:12px; height:12px; }
 .wardrobe__tg:hover{ color:var(--p600); transform:translateY(-1px); }
 
-.wardrobe__head{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+.wardrobe__head{ align-items:baseline; justify-content:space-between; gap:8px; }
 
 /* ============================================================
    14. МЕЛОЧИ БЕТА-ПАНЕЛИ
