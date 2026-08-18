@@ -641,6 +641,7 @@ kbd{
     height:var(--sheet-h);
     border-radius:var(--r-xl) var(--r-xl) 0 0;
     border-width:3px 0 0;
+    padding-top:24px;                 /* место под ручку, иначе её закрывают вкладки */
     padding-bottom:env(safe-area-inset-bottom);
     background:rgba(255,255,255,.94);
     box-shadow:0 -18px 50px -18px rgba(216,67,127,.45);
@@ -649,13 +650,21 @@ kbd{
   .app.is-sheet-closed .wardrobe{ transform:translateY(calc(100% - 0px)); }
 
   .wardrobe__grip{
-    display:block; position:absolute; top:0; left:0; right:0; height:26px;
-    border:0; background:transparent; cursor:pointer;
+    display:block; position:absolute; z-index:5; top:0; left:0; right:0; height:26px;
+    border:0; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.75));
+    border-radius:var(--r-xl) var(--r-xl) 0 0;
+    cursor:pointer;
   }
   .wardrobe__grip i{
-    display:block; width:52px; height:5px; margin:9px auto 0;
-    background:var(--p300); border-radius:99px;
+    display:block; width:56px; height:6px; margin:9px auto 0;
+    background:var(--p400); border-radius:99px;
   }
+  .wardrobe__grip:active i{ background:var(--p600); }
+  /* фоновые эмодзи на телефоне не крутим — лишняя нагрузка */
+  .floaties{ display:none; }
+  /* вещь появляется сразу на своём месте, без «наезда» масштабом */
+  .layer.is-new{ animation:none; }
+  .stage__inner{ animation:none; }
   .wardrobe::before{ margin-top:18px; }
   .wardrobe__head{ display:none; }
   .tabs{ padding:8px 12px; }

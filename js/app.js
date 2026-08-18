@@ -31,6 +31,10 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const round = (v, d = 0) => { const k = 10 ** d; return Math.round(v * k) / k; };
 const rnd   = (a, b) => a + Math.random() * (b - a);
 const calm  = () => matchMedia('(prefers-reduced-motion:reduce)').matches;
+/** телефон/планшет-тач: тут эффекты с эмодзи отключены — они плодят
+    десятки узлов и заметно дёргают слабые устройства */
+const phone = () => matchMedia('(max-width:760px)').matches || matchMedia('(hover:none)').matches;
+const noFx  = () => calm() || phone();
 
 /** путь → безопасный URL (папки кириллицей) */
 const url = p => p.split('/').map(encodeURIComponent).join('/');
@@ -191,7 +195,9 @@ function applyPos(el, cat, n){
   el.style.left   = (p.x / BASE.w * 100) + '%';
   el.style.top    = (p.y / BASE.h * 100) + '%';
   el.style.width  = (m.w * p.s / BASE.w * 100) + '%';
-  el.style.height = 'auto';
+  el.style.height = (m.h * p.s / BASE.h * 100) + '%';   // высота ЯВНО:
+  // иначе до загрузки картинки height=0, translate(-50%,-50%) центрует
+  // по нулю, и вещь «спавнится» не на месте, а потом прыгает.
   el.style.zIndex = p.z;
   const tf = `translate(-50%,-50%) rotate(${p.r}deg) scaleX(${p.f})`;
   el.style.setProperty('--tf', tf);
@@ -269,12 +275,12 @@ function rebuildAll(){
 }
 
 /* ============================================================
-   МИЛОТА: сердечки, клубнички, искры
+   ЭФФЕКТЫ (только десктоп — на телефоне отключены)
    ============================================================ */
 const GLYPHS = ['♥', '🍓', '✦', '🎀', '✧', '🌸', '💗'];
 
 function burst(n = 8){
-  if (calm()) return;
+  if (noFx()) return;
   const r = stage.getBoundingClientRect();
   for (let i = 0; i < n; i++){
     const s = document.createElement('span');
@@ -291,9 +297,8 @@ function burst(n = 8){
   }
 }
 
-/** искры в точке клика */
 function sparkleAt(cx, cy){
-  if (calm() || !cx) return;
+  if (noFx() || !cx) return;
   for (let i = 0; i < 6; i++){
     const s = document.createElement('span');
     s.className = 'sparkle';
@@ -308,9 +313,8 @@ function sparkleAt(cx, cy){
   }
 }
 
-/** клубничный дождь на весь экран */
 function berryRain(n = 26){
-  if (calm()) return;
+  if (noFx()) return;
   for (let i = 0; i < n; i++){
     const s = document.createElement('span');
     s.className = 'rain';
