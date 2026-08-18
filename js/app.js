@@ -219,7 +219,18 @@ function makeLayer(cat, n, fresh){
   img.alt = `${CAT_BY_ID[cat].name} №${n}`;
   img.dataset.cat = cat; img.dataset.n = n;
   setLoading(true);
-  img.onload  = () => setLoading(false);
+  img.onload  = () => {
+    setLoading(false);
+    // Страховка: если размеры файла разошлись с записанными в catalog.js,
+    // высоту берём из настоящих пропорций картинки — иначе вещь растянет.
+    // Ширина не трогается, поэтому настроенные позиции не съезжают.
+    if (img.naturalWidth && img.naturalHeight){
+      const q = pos(cat, n), mm = meta(cat, n);
+      const real = mm.w * q.s * (img.naturalHeight / img.naturalWidth) / BASE.h * 100;
+      const now  = mm.h * q.s / BASE.h * 100;
+      if (Math.abs(real - now) > now * 0.005) img.style.height = real + '%';
+    }
+  };
   img.onerror = () => { setLoading(false); toast('Не нашлось: ' + bigSrc(cat, n)); };
   img.src = url(bigSrc(cat, n));
   applyPos(img, cat, n);
